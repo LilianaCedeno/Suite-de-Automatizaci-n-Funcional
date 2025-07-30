@@ -3,21 +3,17 @@ package suiteTest;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.Duration;
 import java.util.List;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
-import org.testng.annotations.AfterClass;   
-import org.testng.annotations.BeforeClass;
-import org.openqa.selenium.By;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Optional;
-import org.testng.annotations.Parameters;
-import org.testng.annotations.Test;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.*;
+
+import org.testng.annotations.*;
 
 import com.aventstack.extentreports.ExtentTest;
 
@@ -27,27 +23,30 @@ import utils.ExtentReportManager;
 public class LoginTest {
     WebDriver driver;
     String navegador;
-
     ExtentTest test;
 
     @Parameters("browser")
     @BeforeClass
     public void setup(@Optional("chrome") String browser) {
         navegador = browser.toLowerCase();
+
         if (navegador.equals("firefox")) {
             WebDriverManager.firefoxdriver().setup();
             driver = new org.openqa.selenium.firefox.FirefoxDriver();
         } else {
             WebDriverManager.chromedriver().setup();
-            driver = new ChromeDriver();
+
+            ChromeOptions options = new ChromeOptions();
+            options.addArguments("--disable-extensions", "--disable-popup-blocking", "--incognito");
+            driver = new ChromeDriver(options);
         }
 
         driver.manage().window().maximize();
-        ExtentReportManager.initReport(); // Iniciar reporte
+        ExtentReportManager.initReport();
     }
 
     @DataProvider(name = "credenciales")
-    public Object[][] leerCredenciales() {            
+    public Object[][] leerCredenciales() {
         List<String[]> datos = CSVUtils.leerCSV("src/test/resources/User.csv");
         Object[][] resultado = new Object[datos.size()][2];
         for (int i = 0; i < datos.size(); i++) {
@@ -68,22 +67,38 @@ public class LoginTest {
         driver.findElement(By.id("password")).clear();
         driver.findElement(By.id("password")).sendKeys(clave);
 
-        driver.findElement(By.id("login")).click();
-        Thread.sleep(1500);
+        // Espera explícita para el botón de login
 
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement botonLogin = wait.until(ExpectedConditions.elementToBeClickable(By.id("login")));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", botonLogin);
+
+        // Intento de clic en el botón de login
+        test.info("Intentando iniciar sesión con usuario: " + usuario + " y clave: " + clave);
+        
+        try {
+            botonLogin.click();
+        } catch (ElementClickInterceptedException e) {
+            test.warning("Clic interceptado, se realiza clic con JavaScript.");
+            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", botonLogin);
+        }
+
+        Thread.sleep(1500);
         takeScreenshot("login_" + usuario + "_" + clave + ".png");
 
         boolean loginCorrecto = driver.findElements(By.id("submit")).size() > 0 &&
-                                driver.findElement(By.id("submit")).getText().equalsIgnoreCase("Log out");
+                driver.findElement(By.id("submit")).getText().equalsIgnoreCase("Log out");
 
         if (loginCorrecto) {
-            test.pass("Login exitoso");
+            test.pass("Login exitoso para usuario: " + usuario);
         } else {
-            test.fail("Login fallido");
+            test.fail("Login fallido para usuario: " + usuario);
         }
 
         driver.get("https://demoqa.com/login");
     }
+
+    
 
     public void takeScreenshot(String nombre) {
         try {
