@@ -1,3 +1,4 @@
+suiteTest\RegisterTest.class
 utils\CSVUtils.class
 utils\ExtentReportManager.class
 suiteTest\LoginTest.class
