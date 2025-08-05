@@ -1,4 +1,4 @@
-# 🧪 Ev-Mod4 - Proyecto de Pruebas Automatizadas
+# 🧪 Suite de Automatización Funcional - Proyecto de Pruebas Automatizadas
 
 Este proyecto contiene pruebas automatizadas para validar funcionalidades de **registro** y **login** en una aplicación web. Utiliza Java junto con herramientas como Selenium WebDriver, TestNG, y ExtentReports para generar reportes detallados.
 
