@@ -6,36 +6,34 @@ import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.List;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
-
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.*;
 
 import org.testng.annotations.*;
 
 import com.aventstack.extentreports.ExtentTest;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
 import utils.CSVUtils;
 import utils.ExtentReportManager;
 
 public class LoginTest {
     WebDriver driver;
     String navegador;
-    ExtentTest test;
 
-    @Parameters("browser")
     @BeforeClass
+    @Parameters("browser")
     public void setup(@Optional("chrome") String browser) {
         navegador = browser.toLowerCase();
 
         if (navegador.equals("firefox")) {
             WebDriverManager.firefoxdriver().setup();
-            driver = new org.openqa.selenium.firefox.FirefoxDriver();
+            driver = new FirefoxDriver();
         } else {
             WebDriverManager.chromedriver().setup();
-
             ChromeOptions options = new ChromeOptions();
             options.addArguments("--disable-extensions", "--disable-popup-blocking", "--incognito");
             driver = new ChromeDriver(options);
@@ -47,8 +45,9 @@ public class LoginTest {
 
     @DataProvider(name = "credenciales")
     public Object[][] leerCredenciales() {
+        // CSV debe tener 3 columnas: username,password,resultadoEsperado
         List<String[]> datos = CSVUtils.leerCSV("src/test/resources/User.csv");
-        Object[][] resultado = new Object[datos.size()][2];
+        Object[][] resultado = new Object[datos.size()][3];
         for (int i = 0; i < datos.size(); i++) {
             resultado[i] = datos.get(i);
         }
@@ -56,54 +55,72 @@ public class LoginTest {
     }
 
     @Test(dataProvider = "credenciales")
-    public void loginTest(String usuario, String clave) throws Exception {
-        test = ExtentReportManager.createTest("Login con: " + usuario + "/" + clave);
+    public void loginTest(String usuario, String clave, String resultadoEsperado) throws Exception {
+        ExtentTest test = ExtentReportManager.createTest("Login con: " + usuario + " / " + clave);
 
-        driver.get("https://demoqa.com/login");
+        driver.get("https://practicetestautomation.com/practice-test-login/");
 
-        driver.findElement(By.id("userName")).clear();
-        driver.findElement(By.id("userName")).sendKeys(usuario);
+        // Limpiar y completar campos
+        driver.findElement(By.id("username")).clear();
+        driver.findElement(By.id("username")).sendKeys(usuario);
 
         driver.findElement(By.id("password")).clear();
         driver.findElement(By.id("password")).sendKeys(clave);
 
-        // Espera explícita para el botón de login
-
+        // Esperar y hacer clic en botón login
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        WebElement botonLogin = wait.until(ExpectedConditions.elementToBeClickable(By.id("login")));
+        WebElement botonLogin = wait.until(ExpectedConditions.elementToBeClickable(By.id("submit")));
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", botonLogin);
 
-        // Intento de clic en el botón de login
-        test.info("Intentando iniciar sesión con usuario: " + usuario + " y clave: " + clave);
-        
         try {
             botonLogin.click();
         } catch (ElementClickInterceptedException e) {
-            test.warning("Clic interceptado, se realiza clic con JavaScript.");
             ((JavascriptExecutor) driver).executeScript("arguments[0].click();", botonLogin);
         }
 
-        Thread.sleep(1500);
-        takeScreenshot("login_" + usuario + "_" + clave + ".png");
+        Thread.sleep(1500); // esperar respuesta
 
-        boolean loginCorrecto = driver.findElements(By.id("submit")).size() > 0 &&
-                driver.findElement(By.id("submit")).getText().equalsIgnoreCase("Log out");
+        // Captura screenshot
+        takeScreenshot("login_" + usuario + "_" + clave + ".png", test);
 
-        if (loginCorrecto) {
-            test.pass("Login exitoso para usuario: " + usuario);
-        } else {
-            test.fail("Login fallido para usuario: " + usuario);
+        // Verificación simplificada según resultado esperado
+        boolean loginCorrecto;
+        String mensajeError = "";
+
+        // Detectar si se muestra mensaje de error
+        try {
+            WebElement mensajeErrorElem = driver.findElement(By.id("error"));
+            mensajeError = mensajeErrorElem.getText();
+        } catch (NoSuchElementException e) {
+            mensajeError = "";
         }
 
-        driver.get("https://demoqa.com/login");
+        if (resultadoEsperado.equalsIgnoreCase("Login exitoso")) {
+            // Validar que haya logout (login correcto)
+            loginCorrecto = driver.findElements(By.xpath("//button[text()='Log out']")).size() > 0;
+            if (loginCorrecto) {
+                test.pass("Login exitoso para usuario: " + usuario);
+            } else {
+                test.fail("Se esperaba login exitoso pero no se encontró logout.");
+            }
+        } else {
+            // Se espera error, validar que el mensaje de error aparezca y coincida con esperado (opcional)
+            if (!mensajeError.isEmpty()) {
+                test.pass("Login fallido esperado para usuario: " + usuario + " - Mensaje: " + mensajeError);
+            } else {
+                test.fail("Se esperaba error en login pero no se encontró mensaje de error.");
+            }
+        }
+
+        // Volver a página de login para siguiente caso
+        driver.get("https://practicetestautomation.com/practice-test-login/");
     }
 
-    
-
-    public void takeScreenshot(String nombre) {
+    public void takeScreenshot(String nombre, ExtentTest test) {
         try {
             File src = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
             String ruta = "screenshots/" + nombre;
+            new File("screenshots").mkdirs();
             Files.copy(src.toPath(), Paths.get(ruta));
             test.addScreenCaptureFromPath(ruta);
         } catch (Exception e) {

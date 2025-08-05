@@ -7,18 +7,18 @@ import java.util.*;
 public class CSVUtils {
 public static List<String[]> leerCSV(String archivo) {
     List<String[]> datos = new ArrayList<>();
-    // Usar try-with-resources para asegurar el cierre de los recursos
     try (Reader reader = new FileReader(archivo);
          CSVParser parser = new CSVParser(reader, CSVFormat.DEFAULT
              .builder()
              .setHeader()
              .setSkipHeaderRecord(true)
              .build())) {
-        
+
         for (CSVRecord record : parser) {
             datos.add(new String[] {
                 record.get("username"),
-                record.get("password")
+                record.get("password"),
+                record.get("resultadoEsperado")  // <--- AÑADIDO
             });
         }
     } catch (IOException e) {
@@ -26,6 +26,7 @@ public static List<String[]> leerCSV(String archivo) {
     }
     return datos;
 }
+
 
 public static List<String[]> registerLeerCSV(String archivo) {
     List<String[]> datos = new ArrayList<>();

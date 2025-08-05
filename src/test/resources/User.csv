@@ -1,5 +1,6 @@
-username,password
-lilianatest,Password123!
-lilianatest,incorrecto
-,Password123!
-lilianatest,
+username,password,resultadoEsperado
+student,Password123,Login exitoso
+lilianatest,Password123!,Login exitoso
+lilianatest,incorrecto,Credenciales incorrectas
+,Password123!,Falta nombre de usuario
+lilianatest,,Falta contraseña

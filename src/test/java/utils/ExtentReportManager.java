@@ -1,30 +1,3 @@
-// package utils;
-
-// import com.aventstack.extentreports.*;
-// import com.aventstack.extentreports.reporter.ExtentSparkReporter;
-
-// public class ExtentReportManager {
-//     private static ExtentReports extent;
-//     private static ExtentTest test;
-
-//     public static void initReport() {
-//         ExtentSparkReporter reporter = new ExtentSparkReporter("reports/LoginReport.html");
-//         extent = new ExtentReports();
-//         extent.attachReporter(reporter);
-//     }
-
-//     public static ExtentTest createTest(String testName) {
-//         test = extent.createTest(testName);
-//         return test;
-//     }
-
-//     public static void flushReport() {
-//         if (extent != null) {
-//             extent.flush();
-//         }
-//     }
-// }
-
 package utils;
 
 import com.aventstack.extentreports.*;
@@ -32,30 +5,56 @@ import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 
 public class ExtentReportManager {
     private static ExtentReports extent;
-    private static ExtentTest test;
+    private static ThreadLocal<ExtentTest> testThread = new ThreadLocal<>();
 
-    // Inicializa el reporte
-    public static void initReport() {
-        ExtentSparkReporter reporter = new ExtentSparkReporter("reports/RegisterReport.html");
-        extent = new ExtentReports();
-        extent.attachReporter(reporter);
+    // Inicializar solo si no existe
+    public static void initReport(String reportPath) {
+        if (extent == null) {
+            ExtentSparkReporter reporter = new ExtentSparkReporter(reportPath);
+            extent = new ExtentReports();
+            extent.attachReporter(reporter);
+
+            reporter.config().setReportName("Reporte de Automatización");
+            reporter.config().setDocumentTitle("Resultados de Tests");
+
+            extent.setSystemInfo("Sistema", System.getProperty("os.name"));
+            extent.setSystemInfo("Usuario", System.getProperty("user.name"));
+        }
     }
 
-    // Crea un nuevo test dentro del reporte
+    public static void initReport() {
+        initReport("reports/AutomationReport.html");
+    }
+
     public static ExtentTest createTest(String testName) {
-        test = extent.createTest(testName);
+        ExtentTest test = extent.createTest(testName);
+        testThread.set(test);
         return test;
     }
 
-    // Finaliza y guarda el reporte
+    public static ExtentTest getTest() {
+        return testThread.get();
+    }
+
+    public static void logInfo(String message) {
+        if (getTest() != null) getTest().info(message);
+    }
+
+    public static void logPass(String message) {
+        if (getTest() != null) getTest().pass(message);
+    }
+
+    public static void logFail(String message) {
+        if (getTest() != null) getTest().fail(message);
+    }
+
+    public static void logWarning(String message) {
+        if (getTest() != null) getTest().warning(message);
+    }
+
     public static void flushReport() {
         if (extent != null) {
             extent.flush();
         }
-    }
-
-    // Obtiene el objeto ExtentTest actual
-    public static ExtentTest getTest() {
-        return test;
     }
 }

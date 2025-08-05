@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results ignored="0" total="8" passed="8" failed="0" skipped="0">
+  <reporter-output>
+  </reporter-output>
+  <suite started-at="2025-08-05T16:13:54 CLT" name="Surefire suite" finished-at="2025-08-05T16:14:40 CLT" duration-ms="46129">
+    <groups>
+    </groups>
+    <test started-at="2025-08-05T16:13:54 CLT" name="Surefire test" finished-at="2025-08-05T16:14:40 CLT" duration-ms="46129">
+      <class name="suiteTest.LoginTest">
+        <test-method is-config="true" signature="setup(java.lang.String)[pri:0, instance:suiteTest.LoginTest@4b0b0854]" started-at="2025-08-05T16:13:54 CLT" name="setup" finished-at="2025-08-05T16:13:57 CLT" duration-ms="3207" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[chrome]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setup -->
+        <test-method signature="loginTest(java.lang.String,java.lang.String,java.lang.String)[pri:0, instance:suiteTest.LoginTest@4b0b0854]" started-at="2025-08-05T16:13:57 CLT" name="loginTest" data-provider="credenciales" finished-at="2025-08-05T16:14:03 CLT" duration-ms="5594" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[student]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[Password123]]>
+              </value>
+            </param>
+            <param index="2">
+              <value>
+                <![CDATA[Login exitoso]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- loginTest -->
+        <test-method signature="loginTest(java.lang.String,java.lang.String,java.lang.String)[pri:0, instance:suiteTest.LoginTest@4b0b0854]" started-at="2025-08-05T16:14:03 CLT" name="loginTest" data-provider="credenciales" finished-at="2025-08-05T16:14:06 CLT" duration-ms="2889" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[lilianatest]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[Password123!]]>
+              </value>
+            </param>
+            <param index="2">
+              <value>
+                <![CDATA[Login exitoso]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- loginTest -->
+        <test-method signature="loginTest(java.lang.String,java.lang.String,java.lang.String)[pri:0, instance:suiteTest.LoginTest@4b0b0854]" started-at="2025-08-05T16:14:06 CLT" name="loginTest" data-provider="credenciales" finished-at="2025-08-05T16:14:08 CLT" duration-ms="2437" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[lilianatest]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[incorrecto]]>
+              </value>
+            </param>
+            <param index="2">
+              <value>
+                <![CDATA[Credenciales incorrectas]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- loginTest -->
+        <test-method signature="loginTest(java.lang.String,java.lang.String,java.lang.String)[pri:0, instance:suiteTest.LoginTest@4b0b0854]" started-at="2025-08-05T16:14:08 CLT" name="loginTest" data-provider="credenciales" finished-at="2025-08-05T16:14:11 CLT" duration-ms="2602" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[Password123!]]>
+              </value>
+            </param>
+            <param index="2">
+              <value>
+                <![CDATA[Falta nombre de usuario]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- loginTest -->
+        <test-method signature="loginTest(java.lang.String,java.lang.String,java.lang.String)[pri:0, instance:suiteTest.LoginTest@4b0b0854]" started-at="2025-08-05T16:14:11 CLT" name="loginTest" data-provider="credenciales" finished-at="2025-08-05T16:14:14 CLT" duration-ms="3018" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[lilianatest]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[]]>
+              </value>
+            </param>
+            <param index="2">
+              <value>
+                <![CDATA[Falta contraseÃ±a]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- loginTest -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:suiteTest.LoginTest@4b0b0854]" started-at="2025-08-05T16:14:14 CLT" name="tearDown" finished-at="2025-08-05T16:14:15 CLT" duration-ms="1224" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
+      </class> <!-- suiteTest.LoginTest -->
+      <class name="suiteTest.RegisterTest">
+        <test-method is-config="true" signature="setup(java.lang.String)[pri:0, instance:suiteTest.RegisterTest@64cd705f]" started-at="2025-08-05T16:14:15 CLT" name="setup" finished-at="2025-08-05T16:14:17 CLT" duration-ms="1433" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[chrome]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setup -->
+        <test-method signature="registerTest(java.lang.String,java.lang.String,java.lang.String,java.lang.String)[pri:0, instance:suiteTest.RegisterTest@64cd705f]" started-at="2025-08-05T16:14:17 CLT" name="registerTest" data-provider="usuarios" finished-at="2025-08-05T16:14:26 CLT" duration-ms="9326" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[Claudio]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[Carrasco]]>
+              </value>
+            </param>
+            <param index="2">
+              <value>
+                <![CDATA[ClaudioCN]]>
+              </value>
+            </param>
+            <param index="3">
+              <value>
+                <![CDATA[Pass123!]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- registerTest -->
+        <test-method signature="registerTest(java.lang.String,java.lang.String,java.lang.String,java.lang.String)[pri:0, instance:suiteTest.RegisterTest@64cd705f]" started-at="2025-08-05T16:14:26 CLT" name="registerTest" data-provider="usuarios" finished-at="2025-08-05T16:14:33 CLT" duration-ms="6728" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[Jorge]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[ MuÃ±oz]]>
+              </value>
+            </param>
+            <param index="2">
+              <value>
+                <![CDATA[ JorgeCurioso]]>
+              </value>
+            </param>
+            <param index="3">
+              <value>
+                <![CDATA[ Jorge456#]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- registerTest -->
+        <test-method signature="registerTest(java.lang.String,java.lang.String,java.lang.String,java.lang.String)[pri:0, instance:suiteTest.RegisterTest@64cd705f]" started-at="2025-08-05T16:14:33 CLT" name="registerTest" data-provider="usuarios" finished-at="2025-08-05T16:14:40 CLT" duration-ms="7128" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[Carlos]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[ Navarrete]]>
+              </value>
+            </param>
+            <param index="2">
+              <value>
+                <![CDATA[ ]]>
+              </value>
+            </param>
+            <param index="3">
+              <value>
+                <![CDATA[Pass123$]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- registerTest -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:suiteTest.RegisterTest@64cd705f]" started-at="2025-08-05T16:14:40 CLT" name="tearDown" finished-at="2025-08-05T16:14:40 CLT" duration-ms="461" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
+      </class> <!-- suiteTest.RegisterTest -->
+    </test> <!-- Surefire test -->
+  </suite> <!-- Surefire suite -->
+</testng-results>
